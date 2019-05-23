@@ -14,6 +14,12 @@ namespace WebAPI
 
             CreateMap<CommentDTO, CommentModel>();
             CreateMap<CommentModel, CommentDTO>();
+
+            CreateMap<Post, PostDTO>();
+            CreateMap<PostDTO, Post>();
+
+            CreateMap<PostDTO, PostModel>();
+            CreateMap<PostModel, PostDTO>();
         }
     }
 }

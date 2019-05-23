@@ -13,18 +13,18 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentsController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly ICommentService _service;
 
-        public CommentController(IMapper mapper, ICommentService service)
+        public CommentsController(IMapper mapper, ICommentService service)
         {
             _mapper = mapper;
             _service = service;
         }
 
-        // GET: api/Comment
+        // GET: api/Comments
         [HttpGet]
         public async Task<IEnumerable<CommentModel>> GetCommentsAsync()
         {
@@ -32,8 +32,8 @@ namespace WebAPI.Controllers
             return _mapper.Map<List<CommentDTO>, List<CommentModel>>(items.ToList());
         }
 
-        // GET: api/Comment/5
-        [HttpGet("{id}", Name = "Get")]
+        // GET: api/Comments/5
+        [HttpGet("{id}", Name = "GetComment")]
         [ProducesResponseType(typeof(CommentModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCommentByIdAsync(int id)
@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
             return Ok(model);
         }
 
-        // POST: api/Comment
+        // POST: api/Comments
         [HttpPost]
         [ProducesResponseType(typeof(CommentModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
             return CreatedAtAction(nameof(GetCommentByIdAsync), new {id = model.Id}, model);
         }
 
-        // PUT: api/Comment/5
+        // PUT: api/Comments/5
         [HttpPut]
         [ProducesResponseType(typeof(CommentModel), StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -96,7 +96,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        // DELETE: api/Comment/5
+        // DELETE: api/Comments/5
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(CommentModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

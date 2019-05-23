@@ -50,7 +50,7 @@ namespace Tests.Controllers
             var mockService = new Mock<ICommentService>();
             mockService.Setup(service => service.GetCommentsAsync()).ReturnsAsync(GetCommentDTOs());
 
-            CommentController controller = new CommentController(mockMapper.Object, mockService.Object);
+            CommentsController controller = new CommentsController(mockMapper.Object, mockService.Object);
 
             //act
             var actualResult = await controller.GetCommentsAsync();

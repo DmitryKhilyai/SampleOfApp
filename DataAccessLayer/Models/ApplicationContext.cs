@@ -16,7 +16,16 @@ namespace DataAccessLayer.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Server=EPBYMINW5668\\SQLEXPRESS;Database=Travix;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=DIMA-PC\\SQLEXPRESS;Database=Travix;Trusted_Connection=True;");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Comment>()
+                .HasOne(i => i.Post)
+                .WithMany(c => c.Comments)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
