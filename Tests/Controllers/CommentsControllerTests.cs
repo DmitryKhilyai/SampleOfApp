@@ -16,27 +16,11 @@ using WebAPI.Models;
 namespace Tests.Controllers
 {
     [TestFixture]
-    public class CommentControllerTests
+    public class CommentsControllerTests
     {
         //[SetUp]
         //public void Setup()
         //{
-        //}
-
-        //[Test]
-        //public void GetCommentAsync_Should_Return_Entity()
-        //{
-        //    //arrange
-        //    var serviceMock = new Mock<ICommentService>();
-        //    serviceMock.Setup(service=>service.GetCommentAsync())
-
-
-        //    CommentController controller = new CommentController(_mapperMock.Object, );
-
-        //    //act
-
-        //    //assert
-
         //}
 
         [Test]

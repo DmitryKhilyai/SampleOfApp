@@ -4,9 +4,10 @@ namespace DataAccessLayer.Models
 {
     public class ApplicationContext : DbContext
     {
+        public virtual DbSet<Blog> Blogs { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
-
+        
         public ApplicationContext()
         { }
 
@@ -16,7 +17,7 @@ namespace DataAccessLayer.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DIMA-PC\\SQLEXPRESS;Database=Travix;Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer("Server=EPBYMINW5668\\SQLEXPRESS;Database=Database;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,6 +25,12 @@ namespace DataAccessLayer.Models
             modelBuilder.Entity<Comment>()
                 .HasOne(i => i.Post)
                 .WithMany(c => c.Comments)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Post>()
+                .HasOne(i => i.Blog)
+                .WithMany(c => c.Posts)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }
