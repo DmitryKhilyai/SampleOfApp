@@ -17,7 +17,7 @@ namespace DataAccessLayer.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Server=EPBYMINW5668\\SQLEXPRESS;Database=Database;Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -8,11 +8,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using WebAPI.Authentication;
 
 namespace WebAPI
 {
     public class Startup
     {
+        private readonly string _signingSecurityKey;
+        private readonly string _connectionString;
+
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -28,6 +34,9 @@ namespace WebAPI
             }
 
             Configuration = builder.Build();
+
+            _signingSecurityKey = Configuration["SigningSecurityKey"];
+            _connectionString = Configuration["ConnectionString"];
         }
 
         public IConfiguration Configuration { get; }
@@ -35,9 +44,12 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var signingKey = new SigningSymmetricKey(_signingSecurityKey);
+            services.AddSingleton<IJwtSigningEncodingKey>(signingKey);
+
             //The connection string to database must be in the secrets.json file.
             services.AddDbContext<ApplicationContext>(
-                options => options.UseSqlServer(Configuration["ConnectionString"]));
+                options => options.UseSqlServer(_connectionString));
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
@@ -49,6 +61,33 @@ namespace WebAPI
             services.AddSingleton(mapper);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            const string jwtSchemeName = "JwtBearer";
+            var signingDecodingKey = (IJwtSigningDecodingKey)signingKey;
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = jwtSchemeName;
+                    options.DefaultChallengeScheme = jwtSchemeName;
+                })
+                .AddJwtBearer(jwtSchemeName, jwtBearerOptions =>
+                {
+                    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = signingDecodingKey.GetKey(),
+
+                        ValidateIssuer = true,
+                        ValidIssuer = "SampleOfWebAPI",
+
+                        ValidateAudience = true,
+                        ValidAudience = "WebAPI",
+
+                        ValidateLifetime = true,
+
+                        ClockSkew = TimeSpan.FromMinutes(1)
+                    };
+                });
 
             services.AddScoped<IRepository<Comment>, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();
@@ -70,6 +109,7 @@ namespace WebAPI
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
