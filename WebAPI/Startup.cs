@@ -11,11 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using WebAPI.Authentication;
+using WebAPI.Authentication.JWE;
 
 namespace WebAPI
 {
     public class Startup
     {
+        private readonly string _encodingSecurityKey;
         private readonly string _signingSecurityKey;
         private readonly string _connectionString;
 
@@ -35,7 +37,8 @@ namespace WebAPI
 
             Configuration = builder.Build();
 
-            _signingSecurityKey = Configuration["SigningSecurityKey"];
+            _encodingSecurityKey = Configuration["JWT:EncodingSecurityKey"];
+            _signingSecurityKey = Configuration["JWT:SigningSecurityKey"];
             _connectionString = Configuration["ConnectionString"];
         }
 
@@ -47,9 +50,11 @@ namespace WebAPI
             var signingKey = new SigningSymmetricKey(_signingSecurityKey);
             services.AddSingleton<IJwtSigningEncodingKey>(signingKey);
 
+            var encryptionEncodingKey = new EncryptingSymmetricKey(_encodingSecurityKey);
+            services.AddSingleton<IJwtEncryptingEncodingKey>(encryptionEncodingKey);
+
             //The connection string to database must be in the secrets.json file.
-            services.AddDbContext<ApplicationContext>(
-                options => options.UseSqlServer(_connectionString));
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(_connectionString));
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>

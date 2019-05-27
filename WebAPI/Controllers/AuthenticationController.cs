@@ -1,10 +1,11 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using WebAPI.Authentication;
+using WebAPI.Authentication.JWE;
 
 namespace WebAPI.Controllers
 {
@@ -14,24 +15,32 @@ namespace WebAPI.Controllers
     {
         [AllowAnonymous]
         public ActionResult<string> Post(AuthenticationRequest authRequest,
-        [FromServices] IJwtSigningEncodingKey signingEncodingKey)
+            [FromServices] IJwtSigningEncodingKey signingEncodingKey,
+            [FromServices] IJwtEncryptingEncodingKey encryptingEncodingKey)
         {
             var claims = new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, authRequest.Name)
             };
 
-            var token = new JwtSecurityToken(
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(
                 issuer: "SampleOfWebAPI",
                 audience: "WebAPI",
-                claims: claims,
+                subject: new ClaimsIdentity(claims),
+                notBefore: DateTime.Now,
                 expires: DateTime.Now.AddHours(1),
+                issuedAt: DateTime.Now,
                 signingCredentials: new SigningCredentials(
-                        signingEncodingKey.GetKey(),
-                        signingEncodingKey.SigningAlgorithm)
-            );
+                    signingEncodingKey.GetKey(),
+                    signingEncodingKey.SigningAlgorithm),
+                encryptingCredentials: new EncryptingCredentials(
+                    encryptingEncodingKey.GetKey(),
+                    encryptingEncodingKey.SigningAlgorithm,
+                    encryptingEncodingKey.EncryptingAlgorithm));
 
-            string jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+            string jwtToken = tokenHandler.WriteToken(token);
             return jwtToken;
         }
     }
