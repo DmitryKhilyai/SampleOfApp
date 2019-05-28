@@ -69,6 +69,7 @@ namespace WebAPI
 
             const string jwtSchemeName = "JwtBearer";
             var signingDecodingKey = (IJwtSigningDecodingKey)signingKey;
+            var encryptingDecodingKey = (IJwtEncryptingDecodingKey)encryptionEncodingKey;
             services
                 .AddAuthentication(options =>
                 {
@@ -81,6 +82,7 @@ namespace WebAPI
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = signingDecodingKey.GetKey(),
+                        TokenDecryptionKey = encryptingDecodingKey.GetKey(),
 
                         ValidateIssuer = true,
                         ValidIssuer = "SampleOfWebAPI",
