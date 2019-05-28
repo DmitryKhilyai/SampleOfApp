@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO;
 using DataAccessLayer.Models;
-using WebAPI.Models;
 
-namespace WebAPI
+namespace BusinessLogicLayer
 {
     public class MappingProfile : Profile
     {
@@ -12,14 +11,9 @@ namespace WebAPI
             CreateMap<Comment, CommentDTO>();
             CreateMap<CommentDTO, Comment>();
 
-            CreateMap<CommentDTO, CommentModel>();
-            CreateMap<CommentModel, CommentDTO>();
 
             CreateMap<Post, PostDTO>();
             CreateMap<PostDTO, Post>();
-
-            CreateMap<PostDTO, PostModel>();
-            CreateMap<PostModel, PostDTO>();
         }
     }
 }

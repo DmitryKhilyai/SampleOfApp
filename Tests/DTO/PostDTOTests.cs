@@ -1,21 +1,21 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using WebAPI.Models;
+using BusinessLogicLayer.DTO;
+using FluentAssertions;
+using NUnit.Framework;
 
-namespace Tests.Controllers
+namespace Tests.DTO
 {
     [TestFixture]
-    public class PostModelTests
+    public class PostDTOTests
     {
         [Test]
         public void ShouldValidatePostModelSuccessfully()
         {
             //arrange
-            var postModel = new PostModel
+            var postModel = new PostDTO
             {
                 Title = "Title",
                 Content = "Content",
@@ -36,7 +36,7 @@ namespace Tests.Controllers
         public void ShouldValidatePostModelNotSuccessfully_WhenAnyOneRequiredFieldIsNull(string title, string content, string expectedResult)
         {
             //arrange
-            var postModel = new PostModel
+            var postModel = new PostDTO
             {
                 Title = title,
                 Content = content,
@@ -59,7 +59,7 @@ namespace Tests.Controllers
         public void ShouldValidatePostModelNotSuccessfully_WhenDateAreInTheFuture()
         {
             //arrange
-            var postModel = new PostModel
+            var postModel = new PostDTO
             {
                 Title = "Title",
                 Content = "Content",

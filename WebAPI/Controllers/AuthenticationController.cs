@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using WebAPI.Authentication;
 using WebAPI.Authentication.JWE;
+using WebAPI.Authentication.JWS;
 
 namespace WebAPI.Controllers
 {
@@ -18,7 +19,7 @@ namespace WebAPI.Controllers
             [FromServices] IJwtSigningEncodingKey signingEncodingKey,
             [FromServices] IJwtEncryptingEncodingKey encryptingEncodingKey)
         {
-            var claims = new Claim[]
+            var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, authRequest.Name)
             };

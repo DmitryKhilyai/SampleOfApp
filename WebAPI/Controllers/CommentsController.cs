@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -26,38 +24,35 @@ namespace WebAPI.Controllers
 
         // GET: api/Comments
         [HttpGet]
-        public async Task<IEnumerable<CommentModel>> GetCommentsAsync()
+        public async Task<IEnumerable<CommentDTO>> GetCommentsAsync()
         {
-            var items = await _service.GetCommentsAsync();
-            return _mapper.Map<List<CommentDTO>, List<CommentModel>>(items.ToList());
+            return await _service.GetCommentsAsync();
         }
 
         // GET: api/Comments/5
         [HttpGet("{id}", Name = "GetComment")]
-        [ProducesResponseType(typeof(CommentModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCommentByIdAsync(int id)
         {
-            var item = await _service.GetCommentAsync(id);
-            if (item == null)
+            var model = await _service.GetCommentAsync(id);
+            if (model == null)
             {
                 return NotFound();
             }
 
-            var model = _mapper.Map<CommentDTO, CommentModel>(item);
             return Ok(model);
         }
 
         // POST: api/Comments
         [HttpPost]
-        [ProducesResponseType(typeof(CommentModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateCommentAsync([FromBody] CommentModel model)
+        public async Task<IActionResult> CreateCommentAsync([FromBody] CommentDTO model)
         {
             try
             {
-                var item = _mapper.Map<CommentModel, CommentDTO>(model);
-                await _service.CreateCommentAsync(item);
+                await _service.CreateCommentAsync(model);
             }
             catch (ArgumentException e)
             {
@@ -69,9 +64,9 @@ namespace WebAPI.Controllers
 
         // PUT: api/Comments/5
         [HttpPut]
-        [ProducesResponseType(typeof(CommentModel), StatusCodes.Status202Accepted)]
+        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateCommentAsync([FromBody] CommentModel model)
+        public async Task<IActionResult> UpdateCommentAsync([FromBody] CommentDTO model)
         {
             if (model.Id <= 0)
             {
@@ -85,8 +80,7 @@ namespace WebAPI.Controllers
 
             try
             {
-                var item = _mapper.Map<CommentModel, CommentDTO>(model);
-                await _service.ChangeCommentAsync(item);
+                await _service.ChangeCommentAsync(model);
 
                 return AcceptedAtAction(nameof(GetCommentByIdAsync), new { id = model.Id }, model);
             }
@@ -98,7 +92,7 @@ namespace WebAPI.Controllers
 
         // DELETE: api/Comments/5
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(CommentModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCommentAsync(int id)
         {

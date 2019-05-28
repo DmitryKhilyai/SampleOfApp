@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -26,25 +23,23 @@ namespace WebAPI.Controllers
 
         // GET: api/Posts
         [HttpGet]
-        public async Task<IEnumerable<PostModel>> Get()
+        public async Task<IEnumerable<PostDTO>> Get()
         {
-            var items = await _service.GetPostAsync();
-            return _mapper.Map<List<PostDTO>, List<PostModel>>(items.ToList());
+            return await _service.GetPostAsync();
         }
 
         // GET: api/Posts/5
         [HttpGet("{id}", Name = "GetPost")]
-        [ProducesResponseType(typeof(PostModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PostDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetPostByIdAsync(int id)
         {
-            var item = await _service.GetPostAsync(id);
-            if (item == null)
+            var model = await _service.GetPostAsync(id);
+            if (model == null)
             {
                 return NotFound();
             }
 
-            var model = _mapper.Map<PostDTO, PostModel>(item);
             return Ok(model);
         }
 

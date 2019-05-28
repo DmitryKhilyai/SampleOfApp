@@ -10,8 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using WebAPI.Authentication;
+using BusinessLogicLayer;
 using WebAPI.Authentication.JWE;
+using WebAPI.Authentication.JWS;
 
 namespace WebAPI
 {

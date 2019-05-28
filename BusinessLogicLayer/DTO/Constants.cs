@@ -1,4 +1,4 @@
-﻿namespace WebAPI.Models
+﻿namespace BusinessLogicLayer.DTO
 {
     public static class Constants
     {

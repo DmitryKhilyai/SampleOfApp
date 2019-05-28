@@ -1,17 +1,12 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Services;
-using FluentAssertions.Common;
 using Moq;
-using NUnit.Framework.Internal;
-using WebAPI;
 using WebAPI.Controllers;
-using WebAPI.Models;
 
 namespace Tests.Controllers
 {
@@ -53,13 +48,13 @@ namespace Tests.Controllers
             };
         }
 
-        private IEnumerable<CommentModel> GetCommentModels()
+        private IEnumerable<CommentDTO> GetCommentModels()
         {
-            return new List<CommentModel>
+            return new List<CommentDTO>
             {
-                new CommentModel { Id=1, Text = "First"},
-                new CommentModel { Id=2, Text = "Second"},
-                new CommentModel { Id=3, Text = "Third"}
+                new CommentDTO { Id=1, Text = "First"},
+                new CommentDTO { Id=2, Text = "Second"},
+                new CommentDTO { Id=3, Text = "Third"}
             };
         }
     }
