@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataAccessLayer.Models
 {
-    public class Post
+    public class Post: IIdentity
     {
         [Key]
         public int Id { get; set; }

@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Models
 {
-    public class Comment
+    public class Comment: IIdentity
     {
         [Key]
         public int Id { get; set; }

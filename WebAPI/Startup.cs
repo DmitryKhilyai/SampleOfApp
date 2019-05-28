@@ -100,7 +100,7 @@ namespace WebAPI
             services.AddScoped<IRepository<Comment>, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();
 
-            services.AddScoped<IRepository<Post>, PostRepository>();
+            services.AddScoped<IRepository1<Post>, Repository<Post>>();
             services.AddScoped<IPostService, PostService>();
         }
 

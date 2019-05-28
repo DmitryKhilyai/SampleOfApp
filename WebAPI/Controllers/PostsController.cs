@@ -45,20 +45,30 @@ namespace WebAPI.Controllers
 
         // POST: api/Posts
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(typeof(PostDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreatePostAsync([FromBody] PostDTO model)
         {
+            await _service.CreatePostAsync(model);
+
+            return CreatedAtAction(nameof(GetPostByIdAsync), new {id = model.Id}, model);
         }
 
         // PUT: api/Posts/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [ProducesResponseType(typeof(PostDTO), StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdatePostAsync(int id, [FromBody] PostDTO model)
         {
+            await _service.ChangePostAsync(model);
+            return AcceptedAtAction(nameof(GetPostByIdAsync), new {id = model.Id}, model);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task DeletePostAsync(int id)
         {
+            await _service.DeletePostAsync(id);
         }
     }
 }

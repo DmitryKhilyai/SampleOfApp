@@ -1,39 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DataAccessLayer.Models;
+﻿using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
-    public class CommentRepository: IRepository<Comment>
+    public class CommentRepository : IRepository<Comment>
     {
         private ApplicationContext _dbContext;
 
         public CommentRepository(ApplicationContext context)
         {
             _dbContext = context;
-        }
-
-        private bool disposed = false;
-
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _dbContext.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public async Task<IEnumerable<Comment>> GetEntitiesAsync()

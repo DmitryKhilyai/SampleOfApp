@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataAccessLayer.Models
 {
-    public class Blog
+    public class Blog: IIdentity
     {
         [Key]
         public int Id { get; set; }
