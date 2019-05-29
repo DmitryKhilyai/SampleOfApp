@@ -13,6 +13,7 @@ using System;
 using BusinessLogicLayer;
 using WebAPI.Authentication.JWE;
 using WebAPI.Authentication.JWS;
+using WebAPI.Middleware;
 
 namespace WebAPI
 {
@@ -117,6 +118,7 @@ namespace WebAPI
                 app.UseHsts();
             }
 
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
