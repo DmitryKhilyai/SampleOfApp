@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using WebAPI.Models;
 
 namespace WebAPI.Middleware
 {
@@ -26,6 +26,7 @@ namespace WebAPI.Middleware
             }
             catch (Exception e)
             {
+                _logger.LogError(e.Message);
                 await HandleExceptionAsync(context, e);
             }
         }
@@ -34,12 +35,16 @@ namespace WebAPI.Middleware
         {
             var code = HttpStatusCode.InternalServerError; // 500 if unexpected
 
-            _logger.LogError(ex, "message");
-
-            var result = JsonConvert.SerializeObject(new { error = ex.Message });
+            if (ex is ArgumentNullException) code = HttpStatusCode.NotFound;
+            else if (ex is ArgumentException) code = HttpStatusCode.BadRequest;
+            
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
-            return context.Response.WriteAsync(result);
+            return context.Response.WriteAsync(
+                new ErrorDetails {
+                    Message = ex.Message,
+                    StatusCode = (int)code
+                }.ToString());
         }
     }
 }

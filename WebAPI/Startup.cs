@@ -118,7 +118,7 @@ namespace WebAPI
                 app.UseHsts();
             }
 
-            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            app.UseErrorHandlingMiddleware();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();

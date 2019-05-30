@@ -6,6 +6,7 @@ using DataAccessLayer.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogicLayer.Services
 {
@@ -58,10 +59,9 @@ namespace BusinessLogicLayer.Services
                 _repository.Delete(id);
                 await _repository.SaveAsync();
             }
-            catch (Exception e)
+            catch (DbUpdateConcurrencyException e)
             {
-                Console.WriteLine(e);
-                throw;
+                throw new ArgumentException($"The post entity with {id} identifier does not exist in the database.", e);
             }
         }
     }
