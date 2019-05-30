@@ -42,8 +42,8 @@ namespace WebAPI.Middleware
             context.Response.StatusCode = (int)code;
             return context.Response.WriteAsync(
                 new ErrorDetails {
-                    Message = ex.Message,
-                    StatusCode = (int)code
+                    Error = ex.Message,
+                    Status = (int)code
                 }.ToString());
         }
     }
