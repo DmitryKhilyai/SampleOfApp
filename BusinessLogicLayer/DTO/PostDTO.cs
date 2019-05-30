@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogicLayer.DataValidation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,6 +7,7 @@ namespace BusinessLogicLayer.DTO
 {
     public class PostDTO : IValidatableObject
     {
+        [NonNegativeInteger(ErrorMessage = Constants.IdentifierInvalid)]
         public int Id { get; set; }
         [Required(ErrorMessage = Constants.TitleRequired)]
         public string Title { get; set; }

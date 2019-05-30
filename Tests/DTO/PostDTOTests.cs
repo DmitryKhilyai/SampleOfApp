@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using BusinessLogicLayer.DataValidation;
 using BusinessLogicLayer.DTO;
 using FluentAssertions;
 using NUnit.Framework;

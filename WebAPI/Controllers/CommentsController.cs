@@ -6,6 +6,7 @@ using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
@@ -48,17 +49,10 @@ namespace WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ValidateModel]
         public async Task<IActionResult> CreateCommentAsync([FromBody] CommentDTO model)
         {
-            try
-            {
-                await _service.CreateCommentAsync(model);
-            }
-            catch (ArgumentException e)
-            {
-                return BadRequest();
-            }
-
+            await _service.CreateCommentAsync(model);
             return CreatedAtAction(nameof(GetCommentByIdAsync), new {id = model.Id}, model);
         }
 
@@ -66,45 +60,20 @@ namespace WebAPI.Controllers
         [HttpPut]
         [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ValidateModel]
         public async Task<IActionResult> UpdateCommentAsync([FromBody] CommentDTO model)
         {
-            if (model.Id <= 0)
-            {
-                ModelState.AddModelError("comment.id", "The identifier must be a positive number.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                await _service.ChangeCommentAsync(model);
-
-                return AcceptedAtAction(nameof(GetCommentByIdAsync), new { id = model.Id }, model);
-            }
-            catch (Exception e) //todo fix
-            {
-                return BadRequest();
-            }
+            await _service.ChangeCommentAsync(model);
+            return AcceptedAtAction(nameof(GetCommentByIdAsync), new { id = model.Id }, model);
         }
 
         // DELETE: api/Comments/5
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteCommentAsync(int id)
         {
-            try
-            {
-                await _service.DeleteCommentAsync(id);
-                return Ok();
-            }
-            catch (ArgumentException e) //todo fix
-            {
-                return NotFound();
-            }
+            await _service.DeleteCommentAsync(id);
+            return Ok();
         }
     }
 }

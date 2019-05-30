@@ -40,9 +40,16 @@ namespace BusinessLogicLayer.Services
 
         public async Task CreatePostAsync(PostDTO dTO)
         {
-            var item = _mapper.Map<PostDTO, Post>(dTO);
-            _repository.Create(item);
-            await _repository.SaveAsync();
+            try
+            {
+                var item = _mapper.Map<PostDTO, Post>(dTO);
+                _repository.Create(item);
+                await _repository.SaveAsync();
+            }
+            catch(DbUpdateException e)
+            {
+                throw new ArgumentException("An error occurred while create the post in the database.", e);
+            }
         }
 
         public async Task ChangePostAsync(PostDTO dTO)
