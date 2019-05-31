@@ -36,6 +36,7 @@ namespace WebAPI.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         public void Put(int id, [FromBody] string value)
         {
         }
