@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Services;
 using Moq;
@@ -19,17 +18,13 @@ namespace Tests.Controllers
         //}
 
         [Test]
-        public async Task GetCommentsAsync_Should_Return_Entities()//todo fix
+        public async Task GetCommentsAsync_Should_Return_Entities()
         {
             //arrange
-            var mockMapper = new Mock<IMapper>();
-            //mockMapper.Setup(x=>x.Map<CommentDTO, CommentModel>()).Returns()
-
-
             var mockService = new Mock<ICommentService>();
             mockService.Setup(service => service.GetCommentsAsync()).ReturnsAsync(GetCommentDTOs());
 
-            CommentsController controller = new CommentsController(mockMapper.Object, mockService.Object);
+            CommentsController controller = new CommentsController(mockService.Object);
 
             //act
             var actualResult = await controller.GetCommentsAsync();
@@ -42,9 +37,9 @@ namespace Tests.Controllers
         {
             return new List<CommentDTO>
             {
-                new CommentDTO { Id=1, Text = "First"},
-                new CommentDTO { Id=2, Text = "Second"},
-                new CommentDTO { Id=3, Text = "Third"}
+                new CommentDTO {Id = 1, Text = "First"},
+                new CommentDTO {Id = 2, Text = "Second"},
+                new CommentDTO {Id = 3, Text = "Third"}
             };
         }
 
@@ -52,9 +47,9 @@ namespace Tests.Controllers
         {
             return new List<CommentDTO>
             {
-                new CommentDTO { Id=1, Text = "First"},
-                new CommentDTO { Id=2, Text = "Second"},
-                new CommentDTO { Id=3, Text = "Third"}
+                new CommentDTO {Id = 1, Text = "First"},
+                new CommentDTO {Id = 2, Text = "Second"},
+                new CommentDTO {Id = 3, Text = "Third"}
             };
         }
     }

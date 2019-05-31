@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Services;
 using Microsoft.AspNetCore.Http;
@@ -14,12 +12,10 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly ICommentService _service;
 
-        public CommentsController(IMapper mapper, ICommentService service)
+        public CommentsController(ICommentService service)
         {
-            _mapper = mapper;
             _service = service;
         }
 
