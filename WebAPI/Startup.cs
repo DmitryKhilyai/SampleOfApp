@@ -14,6 +14,7 @@ using BusinessLogicLayer;
 using WebAPI.Authentication.JWE;
 using WebAPI.Authentication.JWS;
 using WebAPI.Middleware;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace WebAPI
 {
@@ -68,6 +69,14 @@ namespace WebAPI
             services.AddSingleton(mapper);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddApiVersioning(o =>
+            {
+                o.ApiVersionReader = new HeaderApiVersionReader("api-version");
+                o.AssumeDefaultVersionWhenUnspecified = true;
+                o.DefaultApiVersion = new ApiVersion(1,0);
+                o.ReportApiVersions = true;
+            });
 
             services.AddSwaggerDocument();
 
