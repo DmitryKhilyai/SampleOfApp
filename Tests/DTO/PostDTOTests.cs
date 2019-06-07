@@ -78,5 +78,29 @@ namespace Tests.DTO
             msg.ErrorMessage.Should().BeEquivalentTo(Constants.DateInvalid);
             msg.MemberNames.Count().Should().Be(1);
         }
+
+        [Test]
+        public void ShouldValidatePostModelNotSuccessfully_WhenIdentifierIsNegative()
+        {
+            //arrange
+            var postModel = new PostDTO
+            {
+                Id = -1,
+                Title = "Title",
+                Content = "Content",
+                Date = DateTime.UtcNow.AddHours(-1)
+            };
+
+            //act
+            var validationResults = new List<ValidationResult>();
+            var actualResult = Validator.TryValidateObject(postModel, new ValidationContext(postModel), validationResults, true);
+
+            //assert
+            actualResult.Should().BeFalse("Expected validation to fail.");
+            validationResults.Count.Should().Be(1);
+            var msg = validationResults[0];
+            msg.ErrorMessage.Should().BeEquivalentTo(Constants.IdentifierInvalid);
+            msg.MemberNames.Count().Should().Be(1);
+        }
     }
 }
