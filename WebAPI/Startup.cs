@@ -109,10 +109,10 @@ namespace WebAPI
                     };
                 });
 
-            services.AddScoped<IRepository<Comment>, CommentRepository>();
+            services.AddScoped<IRepository<Comment>, Repository<Comment>>();
             services.AddScoped<ICommentService, CommentService>();
 
-            services.AddScoped<IRepository1<Post>, Repository<Post>>();
+            services.AddScoped<IRepository<Post>, Repository<Post>>();
             services.AddScoped<IPostService, PostService>();
         }
 

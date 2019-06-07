@@ -6,6 +6,7 @@ using DataAccessLayer.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogicLayer.Services
 {
@@ -22,19 +23,36 @@ namespace BusinessLogicLayer.Services
 
         public async Task CreateCommentAsync(CommentDTO itemDto)
         {
-            var item = _mapper.Map<CommentDTO, Comment>(itemDto);
-            await _repository.CreateAsync(item);
+            try
+            {
+                var item = _mapper.Map<CommentDTO, Comment>(itemDto);
+                _repository.Create(item);
+                await _repository.SaveAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new ArgumentException("An error occurred while create the post in the database.", e);
+            }
         }
 
         public async Task ChangeCommentAsync(CommentDTO itemDto)
         {
             var item = _mapper.Map<CommentDTO, Comment>(itemDto);
-            await _repository.UpdateAsync(item);
+            _repository.Update(item);
+            await _repository.SaveAsync();
         }
 
         public async Task DeleteCommentAsync(int id)
         {
-            await _repository.DeleteAsync(id);
+            try
+            {
+                _repository.Delete(id);
+                await _repository.SaveAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new ArgumentException($"The comment entity with {id} identifier does not exist in the database.", e);
+            }
         }
 
         public async Task<CommentDTO> GetCommentAsync(int? id)

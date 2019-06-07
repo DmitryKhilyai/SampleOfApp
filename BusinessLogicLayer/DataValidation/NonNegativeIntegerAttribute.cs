@@ -6,12 +6,7 @@ namespace BusinessLogicLayer.DataValidation
     {
         public override bool IsValid(object value)
         {
-            if (value is int intValue && intValue >= 0)
-            {
-                return true;
-            }
-
-            return false;
+            return value is int intValue && intValue >= 0;
         }
     }
 }

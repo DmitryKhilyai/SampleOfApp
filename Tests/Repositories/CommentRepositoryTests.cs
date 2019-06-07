@@ -28,8 +28,9 @@ namespace Tests.Repositories
             //act
             using (var context = new ApplicationContext(options))
             {
-                var repository = new CommentRepository(context);
-                await repository.CreateAsync(item);
+                var repository = new Repository<Comment>(context);
+                repository.Create(item);
+                await repository.SaveAsync();
             }
 
             //assert
@@ -49,20 +50,21 @@ namespace Tests.Repositories
                 .Options;
 
             var id = 1;
-            var item = new Comment { Id = id, Text = "First" };
+            var item = new Comment {Id = id, Text = "First"};
 
             using (var context = new ApplicationContext(options))
             {
                 context.Comments.Add(item);
                 context.SaveChanges();
 
-                var repository = new CommentRepository(context);
+                var repository = new Repository<Comment>(context);
 
                 //act
-                Func<Task> call = async () => await repository.CreateAsync(item);
+                repository.Create(item);
+                Func<Task> call = async () => await repository.SaveAsync();
 
                 //assert
-                call.Should().Throw<ArgumentException>($"The item with {id} identifier already exists in the database.");
+                call.Should().Throw<ArgumentException>("An item with the same key has already been added.");
             }
         }
 
@@ -90,7 +92,7 @@ namespace Tests.Repositories
             var mockContext = new Mock<ApplicationContext>();
             mockContext.SetupGet(c => c.Comments).Returns(mockSet.Object);
 
-            var repository = new CommentRepository(mockContext.Object);
+            var repository = new Repository<Comment>(mockContext.Object);
 
             //act
             var actualResult = await repository.GetEntitiesAsync();

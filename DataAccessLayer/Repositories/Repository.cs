@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories
 {
-    public class Repository<T>: IRepository1<T> 
+    public class Repository<T>: IRepository<T> 
         where T: class, IIdentity, new()
     {
         private ApplicationContext _dbContext;

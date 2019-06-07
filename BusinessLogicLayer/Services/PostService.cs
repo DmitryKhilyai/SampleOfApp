@@ -13,9 +13,9 @@ namespace BusinessLogicLayer.Services
     public class PostService : IPostService
     {
         private readonly IMapper _mapper;
-        private readonly IRepository1<Post> _repository;
+        private readonly IRepository<Post> _repository;
 
-        public PostService(IMapper mapper, IRepository1<Post> repository)
+        public PostService(IMapper mapper, IRepository<Post> repository)
         {
             _mapper = mapper;
             _repository = repository;

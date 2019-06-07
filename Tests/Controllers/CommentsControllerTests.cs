@@ -12,11 +12,6 @@ namespace Tests.Controllers
     [TestFixture]
     public class CommentsControllerTests
     {
-        //[SetUp]
-        //public void Setup()
-        //{
-        //}
-
         [Test]
         public async Task GetCommentsAsync_Should_Return_Entities()
         {
