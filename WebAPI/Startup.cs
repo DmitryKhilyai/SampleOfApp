@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.Services;
 using DataAccessLayer.Models;
+using DataAccessLayer.Models.AdventureWorks2017;
 using DataAccessLayer.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,7 @@ namespace WebAPI
         private readonly string _encodingSecurityKey;
         private readonly string _signingSecurityKey;
         private readonly string _connectionString;
+        private readonly string _adventureWorks2017ConnectionString;
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
@@ -42,7 +44,8 @@ namespace WebAPI
 
             _encodingSecurityKey = Configuration["JWT:EncodingSecurityKey"];
             _signingSecurityKey = Configuration["JWT:SigningSecurityKey"];
-            _connectionString = Configuration["ConnectionString"];
+            _connectionString = Configuration.GetConnectionString("Database");
+            _adventureWorks2017ConnectionString = Configuration.GetConnectionString("AdventureWorks2017");
         }
 
         public IConfiguration Configuration { get; }
@@ -58,6 +61,7 @@ namespace WebAPI
 
             //The connection string to database must be in the secrets.json file.
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(_connectionString));
+            services.AddDbContext<AdventureWorks2017Context>(options => options.UseSqlServer(_adventureWorks2017ConnectionString));
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
