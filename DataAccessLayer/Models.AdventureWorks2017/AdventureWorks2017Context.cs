@@ -138,6 +138,8 @@ namespace DataAccessLayer.Models.AdventureWorks2017
                     .HasColumnName("rowguid")
                     .HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.SpatialLocation).HasColumnType("geography");
+
                 entity.Property(e => e.StateProvinceId).HasColumnName("StateProvinceID");
 
                 entity.HasOne(d => d.StateProvince)
@@ -643,6 +645,42 @@ namespace DataAccessLayer.Models.AdventureWorks2017
                     .HasMaxLength(50);
             });
 
+            modelBuilder.Entity<Document>(entity =>
+            {
+                entity.HasKey(e => e.DocumentNode)
+                    .HasName("PK_Document_DocumentNode");
+
+                entity.HasIndex(e => new {e.DocumentLevel, e.DocumentNode})
+                    .HasName("AK_Document_DocumentLevel_DocumentNode")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid)
+                    .HasName("AK_Document_rowguid")
+                    .IsUnique();
+
+                entity.HasIndex(e => new {e.FileName, e.Revision});
+
+                entity.Property(e => e.DocumentLevel).HasComputedColumnSql("([DocumentNode].[GetLevel]())");
+
+                entity.Property(e => e.ChangeNumber)
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.FolderFlag)
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Rowguid)
+                    .HasColumnName("rowguid")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.Document)
+                    .HasForeignKey(d => d.Owner);
+            });
+
             modelBuilder.Entity<EmailAddress>(entity =>
             {
                 entity.HasKey(e => new { e.BusinessEntityId, e.EmailAddressId })
@@ -695,6 +733,10 @@ namespace DataAccessLayer.Models.AdventureWorks2017
                     .HasName("AK_Employee_rowguid")
                     .IsUnique();
 
+                entity.HasIndex(e => new {e.OrganizationLevel, e.OrganizationNode});
+
+                entity.HasIndex(e => e.OrganizationNode);
+
                 entity.Property(e => e.BusinessEntityId)
                     .HasColumnName("BusinessEntityID")
                     .ValueGeneratedNever();
@@ -734,6 +776,8 @@ namespace DataAccessLayer.Models.AdventureWorks2017
                     .HasMaxLength(15);
 
                 entity.Property(e => e.OrganizationLevel).HasComputedColumnSql("([OrganizationNode].[GetLevel]())");
+
+                entity.Property(e => e.OrganizationNode).HasColumnType("hierarchyid");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")

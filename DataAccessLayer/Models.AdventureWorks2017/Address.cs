@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.SqlServer.Types;
 
 namespace DataAccessLayer.Models.AdventureWorks2017
 {
@@ -18,6 +19,7 @@ namespace DataAccessLayer.Models.AdventureWorks2017
         public string City { get; set; }
         public int StateProvinceId { get; set; }
         public string PostalCode { get; set; }
+        public SqlGeography SpatialLocation { get; set; }
         public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
 

@@ -8,6 +8,7 @@ namespace DataAccessLayer.Models.AdventureWorks2017
     {
         public Employee()
         {
+            Document = new HashSet<Document>();
             EmployeeDepartmentHistory = new HashSet<EmployeeDepartmentHistory>();
             EmployeePayHistory = new HashSet<EmployeePayHistory>();
             JobCandidate = new HashSet<JobCandidate>();
@@ -17,6 +18,7 @@ namespace DataAccessLayer.Models.AdventureWorks2017
         public int BusinessEntityId { get; set; }
         public string NationalIdnumber { get; set; }
         public string LoginId { get; set; }
+        public SqlHierarchyId OrganizationNode { get; set; }
         public short? OrganizationLevel { get; set; }
         public string JobTitle { get; set; }
         public DateTime BirthDate { get; set; }
@@ -32,6 +34,7 @@ namespace DataAccessLayer.Models.AdventureWorks2017
 
         public virtual Person BusinessEntity { get; set; }
         public virtual SalesPerson SalesPerson { get; set; }
+        public virtual ICollection<Document> Document { get; set; }
         public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistory { get; set; }
         public virtual ICollection<EmployeePayHistory> EmployeePayHistory { get; set; }
         public virtual ICollection<JobCandidate> JobCandidate { get; set; }
