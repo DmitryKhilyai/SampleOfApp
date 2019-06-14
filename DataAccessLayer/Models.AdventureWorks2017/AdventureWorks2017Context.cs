@@ -662,6 +662,8 @@ namespace DataAccessLayer.Models.AdventureWorks2017
 
                 entity.Property(e => e.DocumentLevel).HasComputedColumnSql("([DocumentNode].[GetLevel]())");
 
+                entity.Property(e => e.DocumentNode).HasColumnType("hierarchyid");
+                
                 entity.Property(e => e.ChangeNumber)
                     .HasDefaultValueSql("((0))");
 
