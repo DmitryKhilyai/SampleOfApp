@@ -7,6 +7,11 @@ namespace DataAccessLayer.Models.AdventureWorks2017
 {
     public partial class Document
     {
+        public Document()
+        {
+            ProductDocument = new HashSet<ProductDocument>();
+        }
+
         public SqlHierarchyId DocumentNode { get; set; }
         public short? DocumentLevel { get; set; }
         public string Title { get; set; }
@@ -23,5 +28,6 @@ namespace DataAccessLayer.Models.AdventureWorks2017
         public DateTime ModifiedDate { get; set; }
 
         public virtual Employee Employee { get; set; }
+        public virtual ICollection<ProductDocument> ProductDocument { get; set; }
     }
 }

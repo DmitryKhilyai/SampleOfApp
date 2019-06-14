@@ -10,6 +10,7 @@ namespace DataAccessLayer.Models.AdventureWorks2017
             BillOfMaterialsComponent = new HashSet<BillOfMaterials>();
             BillOfMaterialsProductAssembly = new HashSet<BillOfMaterials>();
             ProductCostHistory = new HashSet<ProductCostHistory>();
+            ProductDocument = new HashSet<ProductDocument>();
             ProductInventory = new HashSet<ProductInventory>();
             ProductListPriceHistory = new HashSet<ProductListPriceHistory>();
             ProductProductPhoto = new HashSet<ProductProductPhoto>();
@@ -55,6 +56,7 @@ namespace DataAccessLayer.Models.AdventureWorks2017
         public virtual ICollection<BillOfMaterials> BillOfMaterialsComponent { get; set; }
         public virtual ICollection<BillOfMaterials> BillOfMaterialsProductAssembly { get; set; }
         public virtual ICollection<ProductCostHistory> ProductCostHistory { get; set; }
+        public virtual ICollection<ProductDocument> ProductDocument { get; set; }
         public virtual ICollection<ProductInventory> ProductInventory { get; set; }
         public virtual ICollection<ProductListPriceHistory> ProductListPriceHistory { get; set; }
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; set; }

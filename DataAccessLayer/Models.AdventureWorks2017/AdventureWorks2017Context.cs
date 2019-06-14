@@ -1268,6 +1268,28 @@ namespace DataAccessLayer.Models.AdventureWorks2017
                     .HasDefaultValueSql("(newid())");
             });
 
+            modelBuilder.Entity<ProductDocument>(entity =>
+            {
+                entity.HasKey(e => new {e.ProductId, e.DocumentNode})
+                    .HasName("PK_ProductDocument_ProductID_DocumentNode");
+
+                entity.Property(e => e.ProductId).HasColumnName("ProductID");
+
+                entity.Property(e => e.DocumentNode).HasColumnType("hierarchyid");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ProductDocument)
+                    .HasForeignKey(d => d.ProductId);
+
+                entity.HasOne(d => d.Document)
+                    .WithMany(p => p.ProductDocument)
+                    .HasForeignKey(d => d.DocumentNode);
+            });
+
             modelBuilder.Entity<ProductInventory>(entity =>
             {
                 entity.HasKey(e => new { e.ProductId, e.LocationId })
