@@ -65,7 +65,7 @@ namespace WebAPI.Controllers
 
         // DELETE: api/Comments/5
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteCommentAsync(int id)
         {
             await _service.DeleteCommentAsync(id);

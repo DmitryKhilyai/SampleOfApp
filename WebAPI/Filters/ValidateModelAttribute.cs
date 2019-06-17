@@ -9,7 +9,7 @@ namespace WebAPI.Filters
         {
             if (!context.ModelState.IsValid)
             {
-                context.Result = new BadRequestObjectResult(context.ModelState);
+                context.Result = new UnprocessableEntityObjectResult(context.ModelState);
             }
         }
     }

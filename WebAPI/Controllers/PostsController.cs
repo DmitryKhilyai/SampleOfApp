@@ -58,9 +58,9 @@ namespace WebAPI.Controllers
             return AcceptedAtAction(nameof(GetPostByIdAsync), new {id = model.Id}, model);
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Posts/5
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeletePostAsync(int id)
         {
             await _service.DeletePostAsync(id);
