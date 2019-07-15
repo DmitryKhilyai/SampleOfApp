@@ -8,10 +8,10 @@ namespace DataAccessLayer.Repositories
     public class Repository<T>: IRepository<T> 
         where T: class, IIdentity, new()
     {
-        private ApplicationContext _dbContext;
-        private DbSet<T> _dbSet = null;
+        private readonly DbContext _dbContext;
+        private readonly DbSet<T> _dbSet;
 
-        public Repository(ApplicationContext context)
+        public Repository(DbContext context)
         {
             _dbContext = context;
             _dbSet = _dbContext.Set<T>();
@@ -31,7 +31,6 @@ namespace DataAccessLayer.Repositories
         {
             _dbContext.Entry(item).State = EntityState.Added;
         }
-
 
         public void Update(T item)
         {
